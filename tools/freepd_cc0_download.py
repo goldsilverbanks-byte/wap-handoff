@@ -25,7 +25,7 @@ ROOT = Path("out/freepd-cc0")
 MAX = 12_000_000
 
 def git_blob_sha(data):
-    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\\0" + data).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
 
 def urls(path):
     encoded = quote(path, safe="/")
@@ -108,7 +108,7 @@ def main():
         "tracks":tracks,
         "notice":"No original private footage, voices, keys, or other DLM assets in this public artifact.",
     }
-    (ROOT/"MANIFEST.json").write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\\n",encoding="utf-8")
+    (ROOT/"MANIFEST.json").write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print("SUCCESS: cached",len(tracks),"distinct source files",flush=True)
 
 if __name__=="__main__":
