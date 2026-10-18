@@ -1,0 +1,30 @@
+name: FreePD CC0 music cache (public isolated transfer)
+on:
+  push:
+    branches:
+      - automation/freepd-cc0-retrieval-20261018
+    paths:
+      - .github/workflows/freepd_cc0_cache.yml
+      - tools/freepd_cc0_download.py
+permissions:
+  contents: read
+concurrency:
+  group: freepd-cc0-public-archive
+  cancel-in-progress: true
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout transfer-only public branch
+        uses: actions/checkout@v4
+      - name: Verify and fetch pinned FreePD tracks (public CC0 declaration)
+        run: python3 tools/freepd_cc0_download.py
+      - name: Publish five exact music files and provenance (no private assets)
+        uses: actions/upload-artifact@v4
+        with:
+          name: freepd-cc0-verified-sources-5-tracks
+          path: out/freepd-cc0/
+          retention-days: 1
+          if-no-files-found: error
+          compression-level: 0
