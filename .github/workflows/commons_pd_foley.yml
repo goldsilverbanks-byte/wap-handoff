@@ -1,0 +1,31 @@
+name: Commons PD Foley for DLM (public archive)
+on:
+  push:
+    branches:
+      - automation/freepd-cc0-retrieval-20261018
+    paths:
+      - .github/workflows/commons_pd_foley.yml
+      - tools/commons_pd_foley.py
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout public branch
+        uses: actions/checkout@v4
+      - name: Install FFprobe metadata tool
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Verify license and retrieve genuine public-domain source sound recordings
+        run: python3 tools/commons_pd_foley.py
+      - name: Save real-recording foley provenance and files
+        uses: actions/upload-artifact@v4
+        with:
+          name: wikimedia-public-domain-metal-and-fan-foley
+          path: out/commons-foley/
+          retention-days: 1
+          if-no-files-found: error
+          compression-level: 0
