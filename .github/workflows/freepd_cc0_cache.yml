@@ -18,6 +18,10 @@ jobs:
     steps:
       - name: Checkout transfer-only public branch
         uses: actions/checkout@v4
+      - name: Install CPU audio metadata tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
       - name: Verify and fetch pinned FreePD tracks (public CC0 declaration)
         run: python3 tools/freepd_cc0_download.py
       - name: Publish five exact music files and provenance (no private assets)
